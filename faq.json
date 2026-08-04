@@ -1,0 +1,38 @@
+{
+    "academy_name": "Sir Osmani Academy",
+    "courses": {
+        "matric": "We offer Matric (Science & Arts) tuition covering Math, Physics, Chemistry, Biology, and English.",
+        "o_level": "We offer O Level courses in Math, Physics, Chemistry, Biology, Computer Science and English.",
+        "a_level": "We offer A Level courses in Math, Physics, Chemistry, Biology and Computer Science.",
+        "spoken_english": "We offer a Spoken English course for beginners and intermediate learners.",
+        "programming": "We offer Python Programming and Web Development courses for students of all levels.",
+        "general": "Sir Osmani Academy offers online tuition for Matric, O Level, A Level, Spoken English and Programming courses."
+    },
+    "contact": {
+        "phone": "+92-300-1234567",
+        "whatsapp": "+92-300-1234567",
+        "email": "info@sirosmaniacademy.com"
+    },
+    "class_timings": {
+        "weekday": "Classes run Monday to Friday, 4 PM to 9 PM.",
+        "weekend": "Weekend batches are available on Saturday, 10 AM to 4 PM."
+    },
+    "teachers": {
+        "general": "All our teachers are qualified subject specialists with at least 5 years of online teaching experience.",
+        "demo": "We offer a free demo class before enrollment so you can meet the teacher and evaluate the teaching style."
+    },
+    "fees": {
+        "general": "Course fees range from PKR 3,000 to PKR 8,000 per month depending on the subject and level.",
+        "discount": "We offer a 10% discount for sibling enrollments and a 15% discount for full-course advance payment.",
+        "payment_methods": "We accept payments via Bank Transfer, JazzCash, EasyPaisa and Credit/Debit Card."
+    },
+    "location": {
+        "general": "Sir Osmani Academy operates fully online, so students can join classes from anywhere via Zoom or Google Meet."
+    },
+    "enrollment": {
+        "general": "To enroll, fill out the registration form on our website or contact us via WhatsApp, and our team will guide you through the process."
+    },
+    "services": {
+        "general": "We provide recorded lecture access, weekly quizzes, homework support, and monthly progress reports."
+    }
+}
