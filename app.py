@@ -8,13 +8,12 @@ Pages:
     - Course Manager     : Admin panel demonstrating OOP CRUD (Course/CourseManager)
     - Query Log          : View logged customer queries
 
-Course Manager and Query Log are admin-only and hidden behind a password.
-
 Run with:
     streamlit run app.py
 """
 
 import os
+import base64
 import pandas as pd
 import streamlit as st
 
@@ -33,6 +32,42 @@ st.set_page_config(
 )
 
 LOGO_PATH = os.path.join("assets", "logo.png")
+BACKGROUND_PATH = os.path.join("assets", "background.jpg")
+
+
+def set_background(image_path):
+    """
+    Sets a full-page background image using custom CSS.
+    A dark, semi-transparent overlay is added on top so text stays readable.
+    If the image file doesn't exist, this does nothing (no crash).
+    """
+    if not os.path.exists(image_path):
+        return
+
+    with open(image_path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+
+    ext = image_path.split(".")[-1]
+
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image:
+                linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+                url("data:image/{ext};base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+set_background(BACKGROUND_PATH)
 
 
 # ---------------------------------------------------------------------------
@@ -63,7 +98,6 @@ if "is_admin" not in st.session_state:
 # ---------------------------------------------------------------------------
 # ADMIN PASSWORD
 # ---------------------------------------------------------------------------
-# Change this password before sharing your app publicly!
 ADMIN_PASSWORD = "osmani2026"
 
 
@@ -77,10 +111,8 @@ with st.sidebar:
     st.title("🎓 Sir Osmani Academy")
     st.caption("Online Tuition Platform")
 
-    # Pages every visitor can see
     available_pages = ["🏠 Home", "💬 Chatbot"]
 
-    # Admin-only pages are only added to the list once logged in
     if st.session_state.is_admin:
         available_pages += ["📚 Course Manager", "📄 Query Log"]
 
@@ -88,7 +120,6 @@ with st.sidebar:
 
     st.divider()
 
-    # Admin login / logout box
     if st.session_state.is_admin:
         st.success("🔓 Admin mode is ON")
         if st.button("Log out of Admin"):
@@ -172,7 +203,6 @@ elif page == "💬 Chatbot":
             if st.button(ex):
                 clicked_example = ex
 
-    # Display existing chat history
     for sender, message in st.session_state.chat_history:
         with st.chat_message(sender):
             st.write(message)
@@ -202,7 +232,7 @@ elif page == "💬 Chatbot":
 
 
 # ---------------------------------------------------------------------------
-# COURSE MANAGER PAGE (OOP CRUD DEMO) — ADMIN ONLY
+# COURSE MANAGER PAGE (OOP CRUD DEMO)
 # ---------------------------------------------------------------------------
 
 elif page == "📚 Course Manager":
@@ -283,7 +313,7 @@ elif page == "📚 Course Manager":
 
 
 # ---------------------------------------------------------------------------
-# QUERY LOG PAGE — ADMIN ONLY
+# QUERY LOG PAGE
 # ---------------------------------------------------------------------------
 
 elif page == "📄 Query Log":
