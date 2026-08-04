@@ -1,0 +1,10 @@
+{
+    "courses": [
+        {
+            "name": "O Level Mathematics",
+            "course_id": "Badge 001",
+            "category": "O Level",
+            "status": "Active"
+        }
+    ]
+}
