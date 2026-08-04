@@ -8,10 +8,12 @@ Implements the required "Class Properties Blueprint":
 
 Here the blueprint is applied to Courses offered by the academy
 (e.g. "O Level Physics", "Spoken English"), which are stored
-persistently in courses.json.
+persistently in courses.json. If GitHub secrets are configured, data
+is saved directly to the GitHub repo so it survives app restarts.
 """
 
 from utils import load_json, save_json
+from github_store import is_github_storage_enabled, load_json_from_github, save_json_to_github
 
 
 class Course:
@@ -55,7 +57,8 @@ class Course:
 class CourseManager:
     """
     Manages a collection of Course objects with full CRUD support.
-    Data is persisted to a JSON file so it survives app restarts.
+    Data is persisted to a JSON file (locally or on GitHub) so it
+    survives app restarts.
     """
 
     def __init__(self, file_path="courses.json"):
@@ -66,12 +69,17 @@ class CourseManager:
     # -- persistence ------------------------------------------------------
 
     def load_data(self):
-        raw = load_json(self.file_path)
+        if is_github_storage_enabled():
+            raw = load_json_from_github(self.file_path)
+        else:
+            raw = load_json(self.file_path)
         items = raw.get("courses", []) if isinstance(raw, dict) else []
         self.courses = [Course.from_dict(item) for item in items]
 
     def save_data(self):
         data = {"courses": [c.to_dict() for c in self.courses]}
+        if is_github_storage_enabled():
+            return save_json_to_github(self.file_path, data, commit_message="Update courses.json via app")
         return save_json(self.file_path, data)
 
     # -- CRUD methods -------------------------------------------------------
