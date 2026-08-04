@@ -8,6 +8,8 @@ Pages:
     - Course Manager     : Admin panel demonstrating OOP CRUD (Course/CourseManager)
     - Query Log          : View logged customer queries
 
+Course Manager and Query Log are admin-only and hidden behind a password.
+
 Run with:
     streamlit run app.py
 """
@@ -54,6 +56,16 @@ course_manager = get_course_manager()
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
+if "is_admin" not in st.session_state:
+    st.session_state.is_admin = False
+
+
+# ---------------------------------------------------------------------------
+# ADMIN PASSWORD
+# ---------------------------------------------------------------------------
+# Change this password before sharing your app publicly!
+ADMIN_PASSWORD = "osmani2026"
+
 
 # ---------------------------------------------------------------------------
 # SIDEBAR NAVIGATION
@@ -64,10 +76,34 @@ with st.sidebar:
         st.image(LOGO_PATH, width=120)
     st.title("🎓 Sir Osmani Academy")
     st.caption("Online Tuition Platform")
-    page = st.radio(
-        "Navigate",
-        ["🏠 Home", "💬 Chatbot", "📚 Course Manager", "📄 Query Log"],
-    )
+
+    # Pages every visitor can see
+    available_pages = ["🏠 Home", "💬 Chatbot"]
+
+    # Admin-only pages are only added to the list once logged in
+    if st.session_state.is_admin:
+        available_pages += ["📚 Course Manager", "📄 Query Log"]
+
+    page = st.radio("Navigate", available_pages)
+
+    st.divider()
+
+    # Admin login / logout box
+    if st.session_state.is_admin:
+        st.success("🔓 Admin mode is ON")
+        if st.button("Log out of Admin"):
+            st.session_state.is_admin = False
+            st.rerun()
+    else:
+        with st.expander("🔒 Admin Login"):
+            entered_password = st.text_input("Password", type="password", key="admin_password_input")
+            if st.button("Unlock Admin Pages"):
+                if entered_password == ADMIN_PASSWORD:
+                    st.session_state.is_admin = True
+                    st.rerun()
+                else:
+                    st.error("Incorrect password.")
+
     st.divider()
     st.caption("Python & AI Mastery — Final Project")
 
@@ -166,7 +202,7 @@ elif page == "💬 Chatbot":
 
 
 # ---------------------------------------------------------------------------
-# COURSE MANAGER PAGE (OOP CRUD DEMO)
+# COURSE MANAGER PAGE (OOP CRUD DEMO) — ADMIN ONLY
 # ---------------------------------------------------------------------------
 
 elif page == "📚 Course Manager":
@@ -247,7 +283,7 @@ elif page == "📚 Course Manager":
 
 
 # ---------------------------------------------------------------------------
-# QUERY LOG PAGE
+# QUERY LOG PAGE — ADMIN ONLY
 # ---------------------------------------------------------------------------
 
 elif page == "📄 Query Log":
