@@ -80,17 +80,22 @@ def load_json_from_github(file_path):
 def save_json_to_github(file_path, data, commit_message="Update data via app"):
     """
     Save (create or update) a JSON file in the GitHub repo.
-    Returns True on success, False on failure.
+    Returns (True, None) on success, or (False, error_message) on failure.
     """
     branch = _get_secret("GITHUB_BRANCH") or "main"
     try:
+        # Need the current file's SHA to update it (GitHub requires this)
         get_response = requests.get(
             _api_url(file_path),
             headers=_headers(),
             params={"ref": branch},
             timeout=10,
         )
-        sha = get_response.json().get("sha") if get_response.status_code == 200 else None
+        sha = None
+        if get_response.status_code == 200:
+            sha = get_response.json().get("sha")
+        elif get_response.status_code not in (404,):
+            return False, f"GitHub read failed ({get_response.status_code}): {get_response.text[:300]}"
 
         encoded_content = base64.b64encode(
             json.dumps(data, indent=4, ensure_ascii=False).encode("utf-8")
@@ -107,9 +112,11 @@ def save_json_to_github(file_path, data, commit_message="Update data via app"):
         put_response = requests.put(
             _api_url(file_path),
             headers=_headers(),
-            data=json.dumps(payload),
+            json=payload,
             timeout=10,
         )
-        return put_response.status_code in (200, 201)
-    except Exception:
-        return False
+        if put_response.status_code in (200, 201):
+            return True, None
+        return False, f"GitHub write failed ({put_response.status_code}): {put_response.text[:300]}"
+    except Exception as exc:
+        return False, f"GitHub request error: {exc}"
