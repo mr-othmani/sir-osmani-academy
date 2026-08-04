@@ -8,8 +8,7 @@ Implements the required "Class Properties Blueprint":
 
 Here the blueprint is applied to Courses offered by the academy
 (e.g. "O Level Physics", "Spoken English"), which are stored
-persistently in courses.json. If GitHub secrets are configured, data
-is saved directly to the GitHub repo so it survives app restarts.
+persistently in courses.json.
 """
 
 from utils import load_json, save_json
@@ -57,13 +56,13 @@ class Course:
 class CourseManager:
     """
     Manages a collection of Course objects with full CRUD support.
-    Data is persisted to a JSON file (locally or on GitHub) so it
-    survives app restarts.
+    Data is persisted to a JSON file so it survives app restarts.
     """
 
     def __init__(self, file_path="courses.json"):
         self.file_path = file_path
         self.courses = []
+        self.last_error = None
         self.load_data()
 
     # -- persistence ------------------------------------------------------
@@ -79,7 +78,10 @@ class CourseManager:
     def save_data(self):
         data = {"courses": [c.to_dict() for c in self.courses]}
         if is_github_storage_enabled():
-            return save_json_to_github(self.file_path, data, commit_message="Update courses.json via app")
+            success, error = save_json_to_github(self.file_path, data, commit_message="Update courses.json via app")
+            if not success:
+                self.last_error = error
+            return success
         return save_json(self.file_path, data)
 
     # -- CRUD methods -------------------------------------------------------
@@ -90,7 +92,10 @@ class CourseManager:
             return False, f"Course ID '{course_id}' already exists."
         course = Course(name, course_id, category, status)
         self.courses.append(course)
-        self.save_data()
+        saved = self.save_data()
+        if not saved:
+            self.courses.remove(course)
+            return False, f"Could not save to storage. Details: {self.last_error}"
         return True, f"Course '{name}' added successfully."
 
     def search(self, course_id):
@@ -111,7 +116,9 @@ class CourseManager:
             course.category = category
         if status:
             course.status = status
-        self.save_data()
+        saved = self.save_data()
+        if not saved:
+            return False, f"Could not save to storage. Details: {self.last_error}"
         return True, f"Course '{course_id}' updated successfully."
 
     def delete(self, course_id):
@@ -120,7 +127,10 @@ class CourseManager:
         if course is None:
             return False, f"Course ID '{course_id}' not found."
         self.courses.remove(course)
-        self.save_data()
+        saved = self.save_data()
+        if not saved:
+            self.courses.append(course)
+            return False, f"Could not save to storage. Details: {self.last_error}"
         return True, f"Course '{course_id}' deleted successfully."
 
     def display(self):
