@@ -5,6 +5,12 @@
             "course_id": "Badge 001",
             "category": "O Level",
             "status": "Active"
+        },
+        {
+            "name": "O Level Computer Science",
+            "course_id": "Badge 002",
+            "category": "O Level",
+            "status": "Active"
         }
     ]
 }
