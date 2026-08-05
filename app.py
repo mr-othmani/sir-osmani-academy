@@ -32,8 +32,7 @@ st.set_page_config(
 )
 
 LOGO_PATH = os.path.join("assets", "logo.png")
-BACKGROUND_PATH = os.path.join("assets", "background.jpg")
-
+BACKGROUND_PATH = "background.png"
 
 def set_background(image_path):
     """
