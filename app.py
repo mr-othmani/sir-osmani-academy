@@ -1,6 +1,6 @@
 """
 app.py
-Streamlit application for Sir Osmani Academy - Online Tuition Chatbot.
+Streamlit application for Sir Abdullah Academy - Online Tuition Chatbot.
 
 Pages:
     - Home              : Introduction to the academy
@@ -17,7 +17,7 @@ import base64
 import pandas as pd
 import streamlit as st
 
-from chatbot import SirOsmaniChatbot
+from chatbot import SirAbdullahChatbot
 from models import CourseManager
 from utils import read_csv_rows, validate_input
 
@@ -26,7 +26,7 @@ from utils import read_csv_rows, validate_input
 # ---------------------------------------------------------------------------
 
 st.set_page_config(
-    page_title="Sir Osmani Academy",
+    page_title="Sir Abdullah Academy",
     page_icon="🎓",
     layout="wide",
 )
@@ -75,7 +75,7 @@ set_background(BACKGROUND_PATH)
 
 @st.cache_resource
 def get_chatbot():
-    return SirOsmaniChatbot()
+    return SirAbdullahChatbot()
 
 
 @st.cache_resource
@@ -97,7 +97,7 @@ if "is_admin" not in st.session_state:
 # ---------------------------------------------------------------------------
 # ADMIN PASSWORD
 # ---------------------------------------------------------------------------
-ADMIN_PASSWORD = "osmani2026"
+ADMIN_PASSWORD = "osmanibhai112233"
 
 
 # ---------------------------------------------------------------------------
@@ -107,7 +107,7 @@ ADMIN_PASSWORD = "osmani2026"
 with st.sidebar:
     if os.path.exists(LOGO_PATH):
         st.image(LOGO_PATH, width=120)
-    st.title("🎓 Sir Osmani Academy")
+    st.title("🎓 Sir Abdullah Academy")
     st.caption("Online Tuition Platform")
 
     available_pages = ["🏠 Home", "💬 Chatbot"]
@@ -143,17 +143,16 @@ with st.sidebar:
 # ---------------------------------------------------------------------------
 
 if page == "🏠 Home":
-    st.title("Welcome to Sir Osmani Academy 🎓")
+    st.title("Welcome to Sir Abdullah Academy 🎓")
     st.subheader("Quality Online Tuition, Anywhere, Anytime")
 
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(
             """
-            **Sir Osmani Academy** offers online tuition for:
+            **Sir Abdullah Academy** offers online tuition for:
             - Matric (Science & Arts)
             - O Level & A Level
-            - Spoken English
             - Python Programming & Web Development
 
             Ask our chatbot anything about courses, fees, timings,
@@ -186,11 +185,11 @@ if page == "🏠 Home":
 # ---------------------------------------------------------------------------
 
 elif page == "💬 Chatbot":
-    st.title("💬 Sir Osmani Academy — Support Chatbot")
+    st.title("💬 Sir Abdullah Academy — Support Chatbot")
     st.caption("Ask about courses, fees, timings, teachers, location, or enrollment.")
 
     example_cols = st.columns(4)
-    examples = [
+    examples = [                                                                                                                                  
         "What courses do you offer?",
         "What are your fees?",
         "What are the class timings?",
@@ -248,7 +247,7 @@ elif page == "📚 Course Manager":
             course_id = st.text_input("Course ID")
             category = st.selectbox(
                 "Category",
-                ["Matric", "O Level", "A Level", "Spoken English", "Programming", "Other"],
+                ["Matric", "O Level", "A Level", "AI and Programming", "Other"],
             )
             status = st.selectbox("Status", ["Active", "Inactive"])
             submitted = st.form_submit_button("Add Course")
@@ -278,7 +277,7 @@ elif page == "📚 Course Manager":
         new_name = st.text_input("New Name (optional)", key="update_name")
         new_category = st.selectbox(
             "New Category (optional)",
-            ["", "Matric", "O Level", "A Level", "Spoken English", "Programming", "Other"],
+            ["", "Matric", "O Level", "A Level","AI and Programming", "Other"],
             key="update_category",
         )
         new_status = st.selectbox("New Status (optional)", ["", "Active", "Inactive"], key="update_status")
