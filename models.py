@@ -1,13 +1,13 @@
 """
 models.py
-Object-Oriented Programming component for Sir Osmani Academy.
+Object-Oriented Programming component for Sir Abdullah Academy.
 
 Implements the required "Class Properties Blueprint":
     Properties : Name, ID, Category, Status
     Methods    : Add, Search, Update, Delete, Display
 
 Here the blueprint is applied to Courses offered by the academy
-(e.g. "O Level Physics", "Spoken English"), which are stored
+(e.g. "O Level Physics", ), which are stored
 persistently in courses.json.
 """
 
@@ -22,7 +22,7 @@ class Course:
     Properties:
         name     -> Name of the course
         course_id -> Unique ID
-        category -> e.g. "O Level", "Matric", "Spoken English"
+        category -> e.g. "O Level", "Matric","Pyhton and AI"
         status   -> "Active" or "Inactive"
     """
 
