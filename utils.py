@@ -1,6 +1,6 @@
 """
 utils.py
-Reusable helper functions for Sir Osmani Academy Chatbot project.
+Reusable helper functions for Sir Abdulah Academy Chatbot project.
 Covers: JSON handling, CSV handling, validation, datetime, and query
 classification. Keeping these functions separate avoids repeated code
 across chatbot.py, models.py and app.py.
