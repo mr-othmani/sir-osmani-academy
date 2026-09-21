@@ -1,6 +1,6 @@
 """
 chatbot.py
-Customer Support Bot for Sir Osmani Academy (Online Tuition).
+Customer Support Bot for Sir Abdullah Academy (Online Tuition).
 
 This chatbot answers Frequently Asked Questions using a JSON knowledge
 base (faq.json). It does NOT take orders - its purpose is to give
