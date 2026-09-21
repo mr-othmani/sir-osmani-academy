@@ -1,6 +1,6 @@
-# Sir Osmani Academy — Online Tuition Chatbot
+# Sir Abdullah Academy — Online Tuition Chatbot
 
-Final Project for **Python & AI Mastery** (Combine Foundation).
+Final Project for **Python & AI Mastery**.
 A Streamlit web app with an FAQ chatbot for an online tuition academy.
 
 ## Features
